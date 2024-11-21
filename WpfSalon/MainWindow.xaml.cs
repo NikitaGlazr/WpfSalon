@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfSalon.Pages;
 
 namespace WpfSalon
 {
@@ -26,11 +27,17 @@ namespace WpfSalon
         public MainWindow()
         {
             InitializeComponent();
+            frame.Content = new PageListClient(frame);
         }
 
         private void frame_LoadCompleted(object sender, NavigationEventArgs e)
         {
-
+            try
+            {
+                PageListClient pg = (PageListClient)e.Content;
+                pg.Load();
+            }
+            catch { };
         }
     }
 }
