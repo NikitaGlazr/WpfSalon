@@ -99,8 +99,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-             
-            <Button x:Name="addEditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="1" Content="Выбрать услугу" Click="addEditButton_Click" />
+            <Button x:Name="addButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="0" Content="Новая услуга" Click="addEditButton_Click" />
+            <Button x:Name="EditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="1" Content="Выбрать услугу" Click="EditButton_Click" />
         </Grid>
     </Grid>
 </Page>

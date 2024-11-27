@@ -67,8 +67,13 @@ namespace WpfSalon.Pages
                     int sum = 0;
                     double fsum = 0;
 
-                      //подсчет 
- 
+                    //подсчет 
+
+                    // 0-5
+                    //5-15
+                    //15-30
+                    //30-70
+                    //70-100
 
                 }
 
