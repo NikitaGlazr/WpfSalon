@@ -184,6 +184,42 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="SalonPictures\122454.png" />
+    <Resource Include="SalonPictures\96.png" />
+    <Resource Include="SalonPictures\face.png" />
+    <Resource Include="SalonPictures\makeup.jpg" />
+    <Resource Include="SalonPictures\man.png" />
+    <Resource Include="SalonPictures\mask.jpeg" />
+    <Resource Include="SalonPictures\piling.jpg" />
+    <Resource Include="SalonPictures\soliarij.jpg" />
+    <Resource Include="SalonPictures\брови.png" />
+    <Resource Include="SalonPictures\Гречишный массаж.jpg" />
+    <Resource Include="SalonPictures\Декорирование нарощенных ресниц стразами.jpg" />
+    <Resource Include="SalonPictures\Демакияж.jpg" />
+    <Resource Include="SalonPictures\Депиляция воском.jpg" />
+    <Resource Include="SalonPictures\Европейский маникюр.jpg" />
+    <Resource Include="SalonPictures\ИК-сауна.jpg" />
+    <Resource Include="SalonPictures\Классический маникюр.png" />
+    <Resource Include="SalonPictures\Комбинированный маникюр.jpg" />
+    <Resource Include="SalonPictures\Контурная пластика.jpg" />
+    <Resource Include="SalonPictures\массаж.jpg" />
+    <Resource Include="SalonPictures\Мезотерапия.jpg" />
+    <Resource Include="SalonPictures\Моделирование ресниц.jpg" />
+    <Resource Include="SalonPictures\ногти.png" />
+    <Resource Include="SalonPictures\Окрашивание бровей.jpg" />
+    <Resource Include="SalonPictures\Парафинотерапия.jpg" />
+    <Resource Include="SalonPictures\Покрытие ногтей гель-лаком.jpg" />
+    <Resource Include="SalonPictures\Полировка ногтей.jpg" />
+    <Resource Include="SalonPictures\Прессотерапия.jpg" />
+    <Resource Include="SalonPictures\Прокол ушей пистолетом.png" />
+    <Resource Include="SalonPictures\Ресницы.png" />
+    <Resource Include="SalonPictures\Снятие ресниц.jpg" />
+    <Resource Include="SalonPictures\Стоун-терапия.jpg" />
+    <Resource Include="SalonPictures\стрижка.png" />
+    <Resource Include="SalonPictures\Укрепление ногтей гелем.jpg" />
+    <Resource Include="SalonPictures\Шугаринг.jpg" />
+    <Resource Include="SalonPictures\Экспресс SPA.png" />
+    <Resource Include="SalonPictures\Экспресс-педикюр.jpg" />
     <Resource Include="beauty_logo.png" />
     <Content Include="Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -9,86 +9,98 @@
       Title="PageListClient">
 
     <Grid Margin="0,0,0,0">
+        <Grid.Resources>
+            <DataTemplate x:Key="MyCol">
+                <Border BorderThickness="1" BorderBrush="Black" Margin="5,5,5,5">
+                    <StackPanel Width="auto" Height="auto" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <Image Source="{Binding MainImagePath}" Margin="10" Width="50" Height="50" HorizontalAlignment="Right"></Image>
+                        <StackPanel Orientation="Vertical" Height="auto">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="{Binding Title}" Width="200" HorizontalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Cost}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding DurationInMinutes}" x:Name="DurationInMinutes" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Discount}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                        <!--кнопки-->
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="Search" Grid.Column="0" TextChanged="Search_TextChanged" Margin="10,16,10,17"/>
-            <ComboBox x:Name="FIO" Grid.Column="1" VerticalAlignment="Center" SelectionChanged="FIO_SelectionChanged" Margin="90,0,30,0">
+            <TextBox Grid.Column="0" TextChanged="TextBox_TextChanged" Margin="10"></TextBox>
+            <ComboBox x:Name="Sort" Grid.Column="1" VerticalAlignment="Center" SelectionChanged="Sort_SelectionChanged">
                 <ComboBoxItem Tag="0">
                     <TextBlock  Text="Без сортировки" ></TextBlock>
                 </ComboBoxItem>
                 <ComboBoxItem Tag="1">
-                    <TextBlock Text="По фамилии" ></TextBlock>
+                    <TextBlock Text="По возрастанию стоимости" ></TextBlock>
                 </ComboBoxItem>
                 <ComboBoxItem  Tag="2">
-                    <TextBlock Text="По дате последнего посещения"></TextBlock>
+                    <TextBlock Text="По убыванию стоимости"></TextBlock>
                 </ComboBoxItem>
-                <ComboBoxItem Tag="3">
-                    <TextBlock Text="По количеству посещения"></TextBlock>
+                <ComboBoxItem  Tag="3">
+                    <TextBlock Text="По возрастанию % скидки"></TextBlock>
                 </ComboBoxItem>
-                 
+                <ComboBoxItem  Tag="4">
+                    <TextBlock Text="По убыванию % скидки"></TextBlock>
+                </ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="Gender"  Grid.Column="2"  Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" ItemsSource="{Binding}" SelectionChanged="Gender_SelectionChanged" Margin="10,0,0,0">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <ComboBox x:Name="RecordsPerPage" Grid.Column="2" VerticalAlignment="Center" SelectionChanged="RecordsPerPage_SelectionChanged" Margin="120,0,10,0" Width="150">
-                <ComboBoxItem Tag="10">
-                    <TextBlock Text="10 записей"></TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem Tag="50">
-                    <TextBlock Text="50 записей"></TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem Tag="200">
-                    <TextBlock Text="200 записей"></TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem Tag="-1">
-                    <TextBlock Text="Все записи"></TextBlock>
-                </ComboBoxItem>
+            <ComboBox x:Name="SortDiscount" Grid.Column="2"  Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding}" SelectionChanged="Sort_SelectionChanged">
+                <ComboBoxItem Content="Все"/>
+                <ComboBoxItem Content="От 0 до 5%"/>
+                <ComboBoxItem Content="От 5 до 15%"/>
+                <ComboBoxItem Content="От 15 до 30%"/>
+                <ComboBoxItem Content="От 30 до 70%"/>
+                <ComboBoxItem Content="От 70 до 100%"/>
             </ComboBox>
         </Grid>
 
-        <DataGrid AutoGenerateColumns="False" x:Name="clientsDataGrid" Grid.Row="1" IsReadOnly="True" GridLinesVisibility="None" MouseDown="clientsDataGrid_MouseDown">
+        <DataGrid AutoGenerateColumns="False" x:Name="agentGrid" Grid.Row="1" HorizontalContentAlignment="Stretch" IsReadOnly="True" GridLinesVisibility="None" MouseDown="agentGrid_MouseDown" LoadingRow="agentGrid_LoadingRow" SelectionChanged="agentGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
-                <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
-                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=d}"/>
-                <DataGridTextColumn Header="Дата добавления" Binding="{Binding RegistrationDate, StringFormat=d}"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
-                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
-                <DataGridTextColumn Header="Пол" Binding="{Binding Gender.Name}"/>
-                <DataGridTextColumn Header="Дата последнего посещения" Binding="{Binding LastVisitDate, StringFormat=d}"/>
-                <DataGridTextColumn Header="Количество посещений" Binding="{Binding VisitCount}"/>
-                <DataGridTemplateColumn Header="Тег">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Border Background="{Binding Tag.Color}" CornerRadius="5" Padding="5">
-                                <TextBlock Text="{Binding Tag.Title}" Foreground="White" />
-                            </Border>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn   CellTemplate="{StaticResource MyCol}" Width="*">
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        
-        
-        
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock Text="Всего: " HorizontalAlignment="Left"  VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="full"  Text="" HorizontalAlignment="Right"  VerticalAlignment="Center"></TextBlock>
+            </StackPanel>
+            <StackPanel  Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Width="auto">
+                <Button x:Name="back" Content="B" Click="back_Click" IsEnabled="False" Height="30" Width="20"></Button>
+                <StackPanel x:Name="pagin" Orientation="Horizontal" HorizontalAlignment="Stretch" Width="auto"></StackPanel>
+                <Button x:Name="forward" Content="F" Click="forward_Click" Height="30" Width="20"></Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+             
+            <Button x:Name="addEditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="1" Content="Выбрать услугу" Click="addEditButton_Click" />
+        </Grid>
     </Grid>
 </Page>
