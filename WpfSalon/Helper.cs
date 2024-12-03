@@ -8,12 +8,12 @@ namespace WpfSalon
 {
     internal class Helper
     {
-        public static Entities ent;
+        public static EntitiesBd ent;
 
-        public static Entities GetContext()
+        public static EntitiesBd GetContext()
         {
             if (ent == null) {
-                ent = new Entities();
+                ent = new EntitiesBd();
             }
             return ent;
         }

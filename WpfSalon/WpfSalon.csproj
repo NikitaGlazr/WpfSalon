@@ -86,10 +86,20 @@
     <Compile Include="Manufacturer.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageAddEditClient.xaml.cs">
       <DependentUpon>PageAddEditClient.xaml</DependentUpon>
@@ -140,16 +150,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -184,47 +184,52 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Услуги салона красоты\122454.png" />
-    <Resource Include="Услуги салона красоты\96.png" />
-    <Resource Include="Услуги салона красоты\face.png" />
-    <Resource Include="Услуги салона красоты\makeup.jpg" />
-    <Resource Include="Услуги салона красоты\man.png" />
-    <Resource Include="Услуги салона красоты\mask.jpeg" />
-    <Resource Include="Услуги салона красоты\piling.jpg" />
-    <Resource Include="Услуги салона красоты\soliarij.jpg" />
-    <Resource Include="Услуги салона красоты\брови.png" />
-    <Resource Include="Услуги салона красоты\Гречишный массаж.jpg" />
-    <Resource Include="Услуги салона красоты\Декорирование нарощенных ресниц стразами.jpg" />
-    <Resource Include="Услуги салона красоты\Демакияж.jpg" />
-    <Resource Include="Услуги салона красоты\Депиляция воском.jpg" />
-    <Resource Include="Услуги салона красоты\Европейский маникюр.jpg" />
-    <Resource Include="Услуги салона красоты\ИК-сауна.jpg" />
-    <Resource Include="Услуги салона красоты\Классический маникюр.png" />
-    <Resource Include="Услуги салона красоты\Комбинированный маникюр.jpg" />
-    <Resource Include="Услуги салона красоты\Контурная пластика.jpg" />
-    <Resource Include="Услуги салона красоты\массаж.jpg" />
-    <Resource Include="Услуги салона красоты\Мезотерапия.jpg" />
-    <Resource Include="Услуги салона красоты\Моделирование ресниц.jpg" />
-    <Resource Include="Услуги салона красоты\ногти.png" />
-    <Resource Include="Услуги салона красоты\Окрашивание бровей.jpg" />
-    <Resource Include="Услуги салона красоты\Парафинотерапия.jpg" />
-    <Resource Include="Услуги салона красоты\Покрытие ногтей гель-лаком.jpg" />
-    <Resource Include="Услуги салона красоты\Полировка ногтей.jpg" />
-    <Resource Include="Услуги салона красоты\Прессотерапия.jpg" />
-    <Resource Include="Услуги салона красоты\Прокол ушей пистолетом.png" />
-    <Resource Include="Услуги салона красоты\Ресницы.png" />
-    <Resource Include="Услуги салона красоты\Снятие ресниц.jpg" />
-    <Resource Include="Услуги салона красоты\Стоун-терапия.jpg" />
-    <Resource Include="Услуги салона красоты\стрижка.png" />
-    <Resource Include="Услуги салона красоты\Укрепление ногтей гелем.jpg" />
-    <Resource Include="Услуги салона красоты\Шугаринг.jpg" />
-    <Resource Include="Услуги салона красоты\Экспресс SPA.png" />
-    <Resource Include="Услуги салона красоты\Экспресс-педикюр.jpg" />
+    <Resource Include="Images\122454.png" />
+    <Resource Include="Images\96.png" />
+    <Resource Include="Images\face.png" />
+    <Resource Include="Images\makeup.jpg" />
+    <Resource Include="Images\man.png" />
+    <Resource Include="Images\mask.jpeg" />
+    <Resource Include="Images\piling.jpg" />
+    <Resource Include="Images\soliarij.jpg" />
+    <Resource Include="Images\брови.png" />
+    <Resource Include="Images\Гречишный массаж.jpg" />
+    <Resource Include="Images\Декорирование нарощенных ресниц стразами.jpg" />
+    <Resource Include="Images\Демакияж.jpg" />
+    <Resource Include="Images\Депиляция воском.jpg" />
+    <Resource Include="Images\Европейский маникюр.jpg" />
+    <Resource Include="Images\ИК-сауна.jpg" />
+    <Resource Include="Images\Классический маникюр.png" />
+    <Resource Include="Images\Комбинированный маникюр.jpg" />
+    <Resource Include="Images\Контурная пластика.jpg" />
+    <Resource Include="Images\массаж.jpg" />
+    <Resource Include="Images\Мезотерапия.jpg" />
+    <Resource Include="Images\Моделирование ресниц.jpg" />
+    <Resource Include="Images\ногти.png" />
+    <Resource Include="Images\Окрашивание бровей.jpg" />
+    <Resource Include="Images\Парафинотерапия.jpg" />
+    <Resource Include="Images\Покрытие ногтей гель-лаком.jpg" />
+    <Resource Include="Images\Полировка ногтей.jpg" />
+    <Resource Include="Images\Прессотерапия.jpg" />
+    <Resource Include="Images\Прокол ушей пистолетом.png" />
+    <Resource Include="Images\Ресницы.png" />
+    <Resource Include="Images\Снятие ресниц.jpg" />
+    <Resource Include="Images\Стоун-терапия.jpg" />
+    <Resource Include="Images\стрижка.png" />
+    <Resource Include="Images\Укрепление ногтей гелем.jpg" />
+    <Resource Include="Images\Шугаринг.jpg" />
+    <Resource Include="Images\Экспресс SPA.png" />
+    <Resource Include="Images\Экспресс-педикюр.jpg" />
     <Resource Include="beauty_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
       <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -232,9 +237,5 @@
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

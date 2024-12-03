@@ -18,11 +18,12 @@
                             <StackPanel Orientation="Horizontal" >
                                 <TextBlock Text="{Binding Title}" Width="200" HorizontalAlignment="Center"></TextBlock>
                             </StackPanel>
-                            <TextBlock Text="{Binding Cost}" Width="100" HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Text="{Binding DurationInMinutes}" x:Name="DurationInMinutes" Width="100" HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Text="{Binding Discount}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Cost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center" TextDecorations="Strikethrough" Visibility="{Binding Discount}"></TextBlock>
+                            <TextBlock Text="{Binding FinalCost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center" Visibility="{Binding Discount}"></TextBlock>
+                            <TextBlock Text="{Binding DurationInMinutes}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Discount, StringFormat='Скидка: {0}%'}" Width="100" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
-                        <!--кнопки-->
+                        
                     </StackPanel>
                 </Border>
             </DataTemplate>
@@ -60,7 +61,7 @@
                     <TextBlock Text="По убыванию % скидки"></TextBlock>
                 </ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="SortDiscount" Grid.Column="2"  Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding}" SelectionChanged="Sort_SelectionChanged">
+            <ComboBox x:Name="SortDiscount" Grid.Column="2"  Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding}" SelectionChanged="SortDiscount_SelectionChanged">
                 <ComboBoxItem Content="Все"/>
                 <ComboBoxItem Content="От 0 до 5%"/>
                 <ComboBoxItem Content="От 5 до 15%"/>
@@ -98,9 +99,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Name="addButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="0" Content="Новая услуга" Click="addEditButton_Click" />
-            <Button x:Name="EditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="1" Content="Выбрать услугу" Click="EditButton_Click" />
+            <TextBox x:Name="AdminCodeTextBox" Grid.Column="0" Margin="10,0,15,10" Height="auto" Width="auto"  />
+            <Button x:Name="AdminButton" Grid.Column="1" Margin="10,0,15,10" Height="auto" Width="auto" Content="Режим администратора" Click="AdminButton_Click" />
+            <Button x:Name="addButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="2" Content="Новая услуга" Click="addEditButton_Click" />
+            <Button x:Name="EditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="3" Content="Выбрать услугу" Click="EditButton_Click" />
         </Grid>
     </Grid>
 </Page>

@@ -28,7 +28,8 @@ namespace WpfSalon
         public string Description { get; set; }
         public Nullable<double> Discount { get; set; }
         public string MainImagePath { get; set; }
-    
+        public decimal FinalCost => Cost * (1 - (decimal)Discount / 100);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientService> ClientService { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
