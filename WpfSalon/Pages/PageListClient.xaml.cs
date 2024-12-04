@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.Globalization;
+
 namespace WpfSalon.Pages
 {
     /// <summary>
@@ -31,6 +33,8 @@ namespace WpfSalon.Pages
         private int totalRecords = 0;
         private List<Service> serviceVisits = new List<Service>();
         private bool ascending;
+        private bool isAdmin = false; // Новая переменная для хранения состояния администратора
+
 
         public PageListClient(Frame frame)
         {
@@ -39,14 +43,19 @@ namespace WpfSalon.Pages
 
             loadListService();
             Load();
+
+           
+            addButton.IsEnabled = false;
+            EditButton.IsEnabled = false;
+            addButton.Visibility = Visibility.Hidden;
+            EditButton.Visibility = Visibility.Hidden;
         }
 
         public void loadListService()
         {
             List<Service> service = new List<Service> { };
             service = Helper.GetContext().Service.ToList();
-            service.Add(new Service { Title = "Все сервисы" });
-            //Type.ItemsSource = service.OrderBy(AgentType => AgentType.ID);
+         
         }
 
 
@@ -55,29 +64,20 @@ namespace WpfSalon.Pages
             try
             {
                 List<Service> service = new List<Service>();
-                var ag = Helper.GetContext().Service.Where(Service => Service.Title.Contains(fnd) || Service.Description.Contains(fnd));
-                if (order > 0) ag = Helper.GetContext().Service.Where(Service => (Service.Title.Contains(fnd) || Service.Description.Contains(fnd) && (Service.Discount == order)));
-                service.Clear();
-                foreach (Service servic in ag)
+                var ag = Helper.GetContext().Service.Where(Service => Service.Title.Contains(fnd) || Service.Description.Contains(fnd)).ToList();
+                if (isAdmin)
                 {
-                    if (servic.MainImagePath == "")
-                    {
-                        servic.MainImagePath = "/images/picture.png";
-                    }
-                    int sum = 0;
-                    double fsum = 0;
-
-                    //подсчет 
-
-                    // 0-5
-                    //5-15
-                    //15-30
-                    //30-70
-                    //70-100
-
+                    service = ag;
+                }
+                else
+                {
+                    service = ag;
                 }
 
+                fullCount = service.Count; // Обновление общего количества
                 full.Text = fullCount.ToString();
+                agentGrid.ItemsSource = service.Skip(start * recordsPersonalPage).Take(recordsPersonalPage).ToList(); // Установите источник данных для agentGrid
+
 
                 // Пагинация
                 int ost = fullCount % 10;
@@ -108,7 +108,139 @@ namespace WpfSalon.Pages
             };
         }
 
- 
+        //сортировка и фильтраци, поиск----------------------------------------------------------------------------
+
+        public void FilterServicesByDiscount(int minDiscount, int maxDiscount)
+        {
+            serviceVisits = Helper.GetContext().Service
+                                 .Where(s => s.Discount >= minDiscount && s.Discount < maxDiscount)
+                                 .ToList();
+            Load();
+        }
+
+
+        private void Sort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void SortDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+        //сортировка и фильтраци, поиск----------------------------------------------------------------------------
+
+
+        //Кнокпи
+        private void addEditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isAdmin)
+            {
+                // Логика для редактирования услуги
+            }
+            else
+            {
+                MessageBox.Show("Только администратор может редактировать услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isAdmin)
+            {
+                // Логика для добавления услуги
+            }
+            else
+            {
+                MessageBox.Show("Только администратор может добавлять услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        //Кнокпи
+
+
+
+        private void agentGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+
+        private void agentGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+
+        }
+
+
+        private void agentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+
+        private void AdminButton_Click(object sender, RoutedEventArgs e)
+        {  // Проверка кода для входа в режим администратора
+
+            if (AdminCodeTextBox.Text == "0000")
+            {
+                MessageBox.Show("Режим администратора активирован!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                isAdmin = true; // Устанавливаем флаг на true
+
+                UpdateAdminUI();
+            }
+            else
+            {
+                MessageBox.Show("Неверный код!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                addButton.Visibility = Visibility.Hidden;
+                EditButton.Visibility = Visibility.Hidden;
+                addButton.IsEnabled = false;
+                EditButton.IsEnabled = false;
+            }
+        }
+
+
+        private void UpdateAdminUI()
+        {
+            addButton.Visibility = Visibility.Visible;
+            EditButton.Visibility = Visibility.Visible;
+
+
+            addButton.IsEnabled = true;
+            EditButton.IsEnabled = true;
+        }
+
+
+        private void turnButton()
+        {
+            if (start == 0) { back.IsEnabled = false; }
+            else { back.IsEnabled = true; };
+            if ((start + 1) * 10 > fullCount) { forward.IsEnabled = false; }
+            else { forward.IsEnabled = true; };
+        }
+        private void forward_Click(object sender, RoutedEventArgs e)
+        {
+            start++;
+            Load();
+        }
+
+        private void back_Click(object sender, RoutedEventArgs e)
+        {
+            start--;
+            Load();
+        }
+
 
         //Изменение цвета страниц на которой находится пользователь, для удобного понимания.
         private void HighlightCurrentPage()
@@ -132,73 +264,19 @@ namespace WpfSalon.Pages
         }
 
 
-        private void addEditButton_Click(object sender, RoutedEventArgs e)
+        public class DiscountVisibilityConverter : IValueConverter
         {
-
-        }
-
-        private void Sort_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (ascending)
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                serviceVisits = serviceVisits.OrderBy(s => s.Cost).ToList();
+                return value != null && (double)value > 0 ? Visibility.Visible : Visibility.Collapsed;
             }
-            else
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                serviceVisits = serviceVisits.OrderByDescending(s => s.Cost).ToList();
+                throw new NotImplementedException();
             }
-            Load(); 
-            */
-        }
-
-        private void agentGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        public void FilterServicesByDiscount(int minDiscount, int maxDiscount)
-        {
-            serviceVisits = Helper.GetContext().Service
-                                 .Where(s => s.Discount >= minDiscount && s.Discount < maxDiscount)
-                                 .ToList();
-            Load();
         }
 
 
-
-        private void turnButton()
-        {
-            if (start == 0) { back.IsEnabled = false; }
-            else { back.IsEnabled = true; };
-            if ((start + 1) * 10 > fullCount) { forward.IsEnabled = false; }
-            else { forward.IsEnabled = true; };
-        }
-        private void forward_Click(object sender, RoutedEventArgs e)
-        {
-            start++;
-            Load();
-        }
-
-        private void back_Click(object sender, RoutedEventArgs e)
-        {
-            start--;
-            Load();
-        }
-
-        private void agentGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void agentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
