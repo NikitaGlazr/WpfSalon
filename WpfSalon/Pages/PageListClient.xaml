@@ -15,19 +15,20 @@
                     <StackPanel Width="auto" Height="auto" Orientation="Horizontal" HorizontalAlignment="Stretch">
                         <Image Source="{Binding MainImagePath}" Margin="10" Width="50" Height="50" HorizontalAlignment="Right"></Image>
                         <StackPanel Orientation="Vertical" Height="auto">
-                            <StackPanel Orientation="Horizontal" >
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Title}" Width="200" HorizontalAlignment="Center"></TextBlock>
                             </StackPanel>
-                            <TextBlock Text="{Binding Cost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center" TextDecorations="Strikethrough" Visibility="{Binding Discount}"></TextBlock>
-                            <TextBlock Text="{Binding FinalCost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center" Visibility="{Binding Discount}"></TextBlock>
-                            <TextBlock Text="{Binding DurationInMinutes}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="OriginalCost" Text="{Binding Cost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center" TextDecorations="Strikethrough" Visibility="Visible"></TextBlock>
+                                <TextBlock x:Name="FinalCost" Text="{Binding FinalCost, StringFormat='{}{0:C}'}" Width="100" HorizontalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Text="{Binding DurationInMinutes, StringFormat='{}{0} минут'}" Width="100" HorizontalAlignment="Center"></TextBlock>
                             <TextBlock Text="{Binding Discount, StringFormat='Скидка: {0}%'}" Width="100" HorizontalAlignment="Center"></TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <Button x:Name="deleteButton" Margin="10,0,15,10" Height="30px" Width="100px" Grid.Column="2" Content="Удалить услугу" Click="deleteButton_Click" />
                                 <Button x:Name="EditButton" Margin="10,0,15,10" Height="30px" Width="150px" Grid.Column="3" Content="Редактировать услугу" Click="addEditButton_Click" />
                             </StackPanel>
                         </StackPanel>
-                      
                     </StackPanel>
                 </Border>
             </DataTemplate>
@@ -65,7 +66,7 @@
                     <TextBlock Text="По убыванию % скидки"></TextBlock>
                 </ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="SortDiscount" Grid.Column="2"  Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding}" SelectionChanged="SortDiscount_SelectionChanged">
+            <ComboBox x:Name="SortDiscount" Grid.Column="2"  Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding}" SelectionChanged="SortDiscount_SelectionChanged" Margin="10,0,0,0">
                 <ComboBoxItem Content="Все"/>
                 <ComboBoxItem Content="От 0 до 5%"/>
                 <ComboBoxItem Content="От 5 до 15%"/>
@@ -96,6 +97,10 @@
                 <Button x:Name="back" Content="B" Click="back_Click" IsEnabled="False" Height="30" Width="20"></Button>
                 <StackPanel x:Name="pagin" Orientation="Horizontal" HorizontalAlignment="Stretch" Width="auto"></StackPanel>
                 <Button x:Name="forward" Content="F" Click="forward_Click" Height="30" Width="20"></Button>
+            </StackPanel>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock Text="Показано: " HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="displayedCount" Text="" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
             </StackPanel>
         </Grid>
 

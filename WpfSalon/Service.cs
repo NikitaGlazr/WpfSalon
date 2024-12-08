@@ -20,7 +20,7 @@ namespace WpfSalon
             this.ClientService = new HashSet<ClientService>();
             this.ServicePhoto = new HashSet<ServicePhoto>();
         }
-    
+
         public int ID { get; set; }
         public string Title { get; set; }
         public decimal Cost { get; set; }
@@ -32,12 +32,13 @@ namespace WpfSalon
         {
             get
             {
-                if (Discount.HasValue && Discount.Value > 0)
+                if (Discount.HasValue)
+                {
                     return Cost * (1 - (decimal)(Discount.Value / 100));
+                }
                 return Cost;
             }
         }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientService> ClientService { get; set; }

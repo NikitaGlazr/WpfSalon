@@ -25,7 +25,8 @@ namespace WpfSalon.Pages
     {
         public int start = 0;
         public int fullCount = 0;
-        public int order = 0;
+       // public int order = 0;
+        private int sortOrder = 0; // 0 - без сортировки, 1 - по возрастанию стоимости, 2 - по убыванию стоимости
         private string fnd = "";
         private string gnd = "";
         private Frame frm;
@@ -33,8 +34,8 @@ namespace WpfSalon.Pages
         private int totalRecords = 0;
         private List<Service> serviceVisits = new List<Service>();
         private bool ascending;
-        private bool isAdmin = false; // Новая переменная для хранения состояния администратора
-
+        private bool isAdmin = false;
+        private int selectedDiscountRange = -1; // -1 means no filter
 
         public PageListClient(Frame frame)
         {
@@ -44,7 +45,6 @@ namespace WpfSalon.Pages
             loadListService();
             Load();
 
-           
             addButton.IsEnabled = false;
             EditButton.IsEnabled = false;
             addButton.Visibility = Visibility.Hidden;
@@ -55,9 +55,9 @@ namespace WpfSalon.Pages
         {
             List<Service> service = new List<Service> { };
             service = Helper.GetContext().Service.ToList();
-         
-        }
 
+
+        }
 
         internal void Load()
         {
@@ -74,12 +74,49 @@ namespace WpfSalon.Pages
                     service = ag;
                 }
 
-                fullCount = service.Count; // Обновление общего количества
+                // Применение фильтрации по скидке
+                if (selectedDiscountRange != -1)
+                {
+                    service = service.Where(s =>
+                    {
+                        switch (selectedDiscountRange)
+                        {
+                            case 0: return s.Discount >= 0.00 && s.Discount < 0.05;
+                            case 1: return s.Discount >= 0.05 && s.Discount < 0.15;
+                            case 2: return s.Discount >= 0.15 && s.Discount < 0.30;
+                            case 3: return s.Discount >= 0.30 && s.Discount < 0.70;
+                            case 4: return s.Discount >= 0.70 && s.Discount <= 1.00;
+                            default: return true;
+                        }
+                    }).ToList();
+                }
+
+                // Применение сортировки
+                switch (sortOrder)
+                {
+                    case 1:
+                        service = service.OrderBy(s => s.Cost).ToList();
+                        break;
+                    case 2:
+                        service = service.OrderByDescending(s => s.Cost).ToList();
+                        break;
+                    case 3:
+                        service = service.OrderBy(s => s.Discount).ToList();
+                        break;
+                    case 4:
+                        service = service.OrderByDescending(s => s.Discount).ToList();
+                        break;
+                }
+          
+
+
+                fullCount = service.Count;
                 full.Text = fullCount.ToString();
-                agentGrid.ItemsSource = service.Skip(start * recordsPersonalPage).Take(recordsPersonalPage).ToList(); // Установите источник данных для agentGrid
+                var displayedServices = service.Skip(start * recordsPersonalPage).Take(recordsPersonalPage).ToList();
+                agentGrid.ItemsSource = displayedServices;
 
+                displayedCount.Text = $"{displayedServices.Count} из {fullCount}";
 
-                // Пагинация
                 int ost = fullCount % 10;
                 int pag = (fullCount - ost) / 10;
                 if (ost > 0) pag++;
@@ -92,12 +129,11 @@ namespace WpfSalon.Pages
                     myButton.Content = i + 1;
                     myButton.Width = 20;
                     myButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    myButton.Click += PageButton_Click; // Добавляем обработчик событий
                     myButton.Tag = i;
-                    //myButton.Click += new RoutedEventHandler(paginButto_Click);
                     pagin.Children.Add(myButton);
                 }
 
-                // Вызов метода HighlightCurrentPage для подсветки страницы
                 HighlightCurrentPage();
                 turnButton();
             }
@@ -108,8 +144,6 @@ namespace WpfSalon.Pages
             };
         }
 
-        //сортировка и фильтраци, поиск----------------------------------------------------------------------------
-
         public void FilterServicesByDiscount(int minDiscount, int maxDiscount)
         {
             serviceVisits = Helper.GetContext().Service
@@ -118,26 +152,53 @@ namespace WpfSalon.Pages
             Load();
         }
 
-
         private void Sort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (Sort.SelectedItem is ComboBoxItem selectedItem)
+            {
+                if (int.TryParse(selectedItem.Tag.ToString(), out int order))
+                {
+                    sortOrder = order;
+                    Load();
+                }
+            }
         }
-
         private void SortDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (SortDiscount.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string content = selectedItem.Content.ToString();
+                switch (content)
+                {
+                    case "Все":
+                        selectedDiscountRange = -1;
+                        break;
+                    case "От 0 до 5%":
+                        selectedDiscountRange = 0;
+                        break;
+                    case "От 5 до 15%":
+                        selectedDiscountRange = 1;
+                        break;
+                    case "От 15 до 30%":
+                        selectedDiscountRange = 2;
+                        break;
+                    case "От 30 до 70%":
+                        selectedDiscountRange = 3;
+                        break;
+                    case "От 70 до 100%":
+                        selectedDiscountRange = 4;
+                        break;
+                }
+                Load();
+            }
         }
-
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            fnd = (sender as TextBox).Text;
+            Load();
         }
-        //сортировка и фильтраци, поиск----------------------------------------------------------------------------
 
-
-        //Кнокпи
         private void addEditButton_Click(object sender, RoutedEventArgs e)
         {
             if (isAdmin)
@@ -162,41 +223,37 @@ namespace WpfSalon.Pages
             }
         }
 
-
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
-        //Кнокпи
-
-
 
         private void agentGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-
         private void agentGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-
+            var service = e.Row.DataContext as Service;
+            if (service != null && service.Discount > 0)
+            {
+                e.Row.Background = new SolidColorBrush(Colors.LightGreen);
+            }
         }
-
 
         private void agentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-
         private void AdminButton_Click(object sender, RoutedEventArgs e)
-        {  // Проверка кода для входа в режим администратора
-
+        {
             if (AdminCodeTextBox.Text == "0000")
             {
                 MessageBox.Show("Режим администратора активирован!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                isAdmin = true; // Устанавливаем флаг на true
+                isAdmin = true;
 
                 UpdateAdminUI();
             }
@@ -210,17 +267,14 @@ namespace WpfSalon.Pages
             }
         }
 
-
         private void UpdateAdminUI()
         {
             addButton.Visibility = Visibility.Visible;
             EditButton.Visibility = Visibility.Visible;
 
-
             addButton.IsEnabled = true;
             EditButton.IsEnabled = true;
         }
-
 
         private void turnButton()
         {
@@ -242,7 +296,14 @@ namespace WpfSalon.Pages
         }
 
 
-        //Изменение цвета страниц на которой находится пользователь, для удобного понимания.
+        private void PageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                start = (int)button.Tag;
+                Load();
+            }
+        }
         private void HighlightCurrentPage()
         {
             foreach (var child in pagin.Children)
@@ -262,21 +323,5 @@ namespace WpfSalon.Pages
                 }
             }
         }
-
-
-        public class DiscountVisibilityConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return value != null && (double)value > 0 ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-
     }
 }
