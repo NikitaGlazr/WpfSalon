@@ -81,6 +81,7 @@ namespace WpfSalon.Pages
                     {
                         switch (selectedDiscountRange)
                         {
+
                             case 0: return s.Discount >= 0 && s.Discount < 5;
                             case 1: return s.Discount >= 5 && s.Discount < 15;
                             case 2: return s.Discount >= 15 && s.Discount < 30;

@@ -25,6 +25,7 @@ namespace WpfSalon.Pages
             InitializeComponent();
 
 
+
         }
     }
 }
