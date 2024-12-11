@@ -68,10 +68,26 @@ namespace WpfSalon.Pages
                 if (isAdmin)
                 {
                     service = ag;
-                }
+                    foreach (Service servicee in ag)
+                    {
+                        if (servicee.MainImagePath == "")
+                        {
+                            servicee.MainImagePath = "/Услуги салона красоты/122454.png";
+                            
+                        }
+                    }
+                    }
                 else
                 {
                     service = ag;
+                    foreach (Service servicee in ag)
+                    {
+                        if (servicee.MainImagePath == "")
+                        {
+                            servicee.MainImagePath = "/Услуги салона красоты/122454.png";
+
+                        }
+                    }
                 }
 
                 // Применение фильтрации по скидке
@@ -108,8 +124,9 @@ namespace WpfSalon.Pages
                         service = service.OrderByDescending(s => s.Discount).ToList();
                         break;
                 }
-          
 
+
+               
 
                 fullCount = service.Count;
                 full.Text = fullCount.ToString();
@@ -117,6 +134,7 @@ namespace WpfSalon.Pages
                 agentGrid.ItemsSource = displayedServices;
 
                 displayedCount.Text = $"{displayedServices.Count} из {fullCount}";
+
 
                 int ost = fullCount % 10;
                 int pag = (fullCount - ost) / 10;
@@ -217,7 +235,8 @@ namespace WpfSalon.Pages
         {
             if (isAdmin)
             {
-                // Логика для добавления услуги
+                // Логика для редактирования услуги
+                frm.Content = new PageAddEditClient(null);
             }
             else
             {
