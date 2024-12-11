@@ -81,11 +81,11 @@ namespace WpfSalon.Pages
                     {
                         switch (selectedDiscountRange)
                         {
-                            case 0: return s.Discount >= 0.00 && s.Discount < 0.05;
-                            case 1: return s.Discount >= 0.05 && s.Discount < 0.15;
-                            case 2: return s.Discount >= 0.15 && s.Discount < 0.30;
-                            case 3: return s.Discount >= 0.30 && s.Discount < 0.70;
-                            case 4: return s.Discount >= 0.70 && s.Discount <= 1.00;
+                            case 0: return s.Discount >= 0 && s.Discount < 5;
+                            case 1: return s.Discount >= 5 && s.Discount < 15;
+                            case 2: return s.Discount >= 15 && s.Discount < 30;
+                            case 3: return s.Discount >= 30 && s.Discount < 70;
+                            case 4: return s.Discount >= 70 && s.Discount <= 100;
                             default: return true;
                         }
                     }).ToList();
@@ -204,6 +204,7 @@ namespace WpfSalon.Pages
             if (isAdmin)
             {
                 // Логика для редактирования услуги
+                frm.Content = new PageAddEditClient(null);
             }
             else
             {

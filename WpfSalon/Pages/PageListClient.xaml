@@ -114,7 +114,7 @@
             <TextBox x:Name="AdminCodeTextBox" Grid.Column="0" Margin="10,0,15,10" Height="auto" Width="auto"  />
             <Button x:Name="AdminButton" Grid.Column="1" Margin="10,0,15,10" Height="auto" Width="auto" Content="Режим администратора" Click="AdminButton_Click" />
             <Button x:Name="addButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="2" Content="Новая услуга" Click="addButton_Click" />
-            <Button x:Name="EditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="3" Content="Выбрать услугу" Click="addEditButton_Click" />
+            <Button x:Name="EditButton" Margin="10,0,15,10" Height="auto" Width="auto" Grid.Column="3" Content="Редактировать услугу" Click="addEditButton_Click" />
         </Grid>
     </Grid>
 </Page>

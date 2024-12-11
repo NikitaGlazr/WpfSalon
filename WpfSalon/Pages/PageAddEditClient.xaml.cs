@@ -20,9 +20,11 @@ namespace WpfSalon.Pages
     /// </summary>
     public partial class PageAddEditClient : Page
     {
-        public PageAddEditClient()
+        public PageAddEditClient(Service service)
         {
             InitializeComponent();
+
+
         }
     }
 }
