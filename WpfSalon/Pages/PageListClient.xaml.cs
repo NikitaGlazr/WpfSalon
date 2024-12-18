@@ -40,7 +40,8 @@ namespace WpfSalon.Pages
         public PageListClient(Frame frame)
         {
             InitializeComponent();
-            frm = new Frame();
+            // frm = new Frame();
+            this.frm = frame;
 
             loadListService();
             Load();
@@ -55,8 +56,6 @@ namespace WpfSalon.Pages
         {
             List<Service> service = new List<Service> { };
             service = Helper.GetContext().Service.ToList();
-
-
         }
 
         internal void Load()
@@ -73,10 +72,9 @@ namespace WpfSalon.Pages
                         if (servicee.MainImagePath == "")
                         {
                             servicee.MainImagePath = "/Услуги салона красоты/122454.png";
-                            
                         }
                     }
-                    }
+                }
                 else
                 {
                     service = ag;
@@ -85,7 +83,6 @@ namespace WpfSalon.Pages
                         if (servicee.MainImagePath == "")
                         {
                             servicee.MainImagePath = "/Услуги салона красоты/122454.png";
-
                         }
                     }
                 }
@@ -124,9 +121,6 @@ namespace WpfSalon.Pages
                         service = service.OrderByDescending(s => s.Discount).ToList();
                         break;
                 }
-
-
-               
 
                 fullCount = service.Count;
                 full.Text = fullCount.ToString();
@@ -220,28 +214,39 @@ namespace WpfSalon.Pages
 
         private void addEditButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isAdmin)
+            Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
+            if (selectedService != null)
             {
-                // Логика для редактирования услуги
-                frm.Content = new PageAddEditClient(null);
+                frm.Navigate(new PageAddEditClient(selectedService)); // Передаем выбранную услугу
             }
             else
             {
-                MessageBox.Show("Только администратор может редактировать услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Выберите услугу для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
+            Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
+            if (selectedService == null)
+            {
+                frm.Navigate(new PageAddEditClient(null)); // Передаем выбранную услугу
+            }
+            else
+            {
+                MessageBox.Show("Выберите услугу для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            /*
             if (isAdmin)
             {
                 // Логика для редактирования услуги
-                frm.Content = new PageAddEditClient(null);
+                // frm.Content = new PageAddEditClient(null);
+                //frm.Navigate(new PageAddEditClient(null));
             }
             else
             {
                 MessageBox.Show("Только администратор может добавлять услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            }*/
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
