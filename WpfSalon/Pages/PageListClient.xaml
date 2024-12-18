@@ -25,8 +25,8 @@
                             <TextBlock Text="{Binding DurationInMinutes, StringFormat='{}{0} минут'}" Width="100" HorizontalAlignment="Center"></TextBlock>
                             <TextBlock Text="{Binding Discount, StringFormat='Скидка: {0}%'}" Width="100" HorizontalAlignment="Center"></TextBlock>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="deleteButton" Margin="10,0,15,10" Height="30px" Width="100px" Grid.Column="2" Content="Удалить услугу" Click="deleteButton_Click" />
-                                <Button x:Name="EditButton" Margin="10,0,15,10" Height="30px" Width="150px" Grid.Column="3" Content="Редактировать услугу" Click="addEditButton_Click" />
+                                <Button x:Name="deleteButtonx" Margin="10,0,15,10" Height="30px" Width="100px" Grid.Column="2" Content="Удалить услугу" Click="deleteButton_Click" />
+                                <Button x:Name="EditButtonx" Margin="10,0,15,10" Height="30px" Width="150px" Grid.Column="3" Content="Редактировать услугу" Click="addEditButton_Click" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

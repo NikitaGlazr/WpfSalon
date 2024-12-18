@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
 using System.Globalization;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace WpfSalon.Pages
 {
@@ -25,7 +26,7 @@ namespace WpfSalon.Pages
     {
         public int start = 0;
         public int fullCount = 0;
-       // public int order = 0;
+        // public int order = 0;
         private int sortOrder = 0; // 0 - без сортировки, 1 - по возрастанию стоимости, 2 - по убыванию стоимости
         private string fnd = "";
         private string gnd = "";
@@ -214,28 +215,38 @@ namespace WpfSalon.Pages
 
         private void addEditButton_Click(object sender, RoutedEventArgs e)
         {
-            Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
-            if (selectedService != null)
+            if (isAdmin)
             {
-                frm.Navigate(new PageAddEditClient(selectedService)); // Передаем выбранную услугу
+                Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
+                if (selectedService != null)
+                {
+                    frm.Navigate(new PageAddEditClient(selectedService)); // Передаем выбранную услугу
+                }
+                else
+                {
+                    MessageBox.Show("Выберите услугу для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             else
-            {
-                MessageBox.Show("Выберите услугу для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            MessageBox.Show("Только администратор может редактировать услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
-            if (selectedService == null)
-            {
-                frm.Navigate(new PageAddEditClient(null)); // Передаем выбранную услугу
+            if (isAdmin)
+            { 
+              Service selectedService = agentGrid.SelectedItem as Service; // Получаем выбранную услугу из DataGrid
+                if (selectedService == null)
+                {
+                    frm.Navigate(new PageAddEditClient(null)); // Передаем выбранную услугу
+                }
+                else
+                {
+                    MessageBox.Show("Выберите пустую услугу.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             else
-            {
-                MessageBox.Show("Выберите услугу для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            MessageBox.Show("Только администратор может добавлять услуги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             /*
             if (isAdmin)
             {
@@ -251,6 +262,7 @@ namespace WpfSalon.Pages
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
+
 
         }
 
@@ -286,6 +298,7 @@ namespace WpfSalon.Pages
             else
             {
                 MessageBox.Show("Неверный код!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                isAdmin = false;
                 addButton.Visibility = Visibility.Hidden;
                 EditButton.Visibility = Visibility.Hidden;
                 addButton.IsEnabled = false;

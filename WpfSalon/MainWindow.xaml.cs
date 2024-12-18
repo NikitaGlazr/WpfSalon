@@ -38,6 +38,13 @@ namespace WpfSalon
                 pg.Load();
             }
             catch { };
+
+            /*
+             1000-7
+             993-7
+             986-7
+
+             */
         }
     }
 }
